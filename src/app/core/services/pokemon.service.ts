@@ -37,8 +37,14 @@ export class PokemonService {
     return this.http.post<Pokemon>(this.apiUrl, pokemonData);
   }
 
-  updatePosition(id: number, newPosition: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}/position`, { newPosition });
+  updatePosition(id: number, newPosition: number): Observable<Pokemon> {
+    return this.http.put<Pokemon>(
+      `${this.apiUrl}/${id}/position`, 
+      newPosition, 
+      {
+        headers: { 'Content-Type': 'application/json' } // Especifica el tipo de contenido como JSON 
+      }
+    );
   }
 
 }

@@ -175,3 +175,40 @@
   
   &:hover { background-color: #2563eb; }
 }
+
+// Indicador visual de arrastre
+.drag-handle {
+  color: #cbd5e1;
+  cursor: grab;
+  font-size: 1.2rem;
+  padding: 10px;
+  margin-right: 10px;
+  user-select: none;
+  
+  &:active { cursor: grabbing; }
+}
+
+// Estilo de la tarjeta MIENTRAS el usuario la lleva arrastrando con el mouse
+.cdk-drag-preview {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border: 2px solid #3b82f6 !important;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+// Sombra/Espacio que queda vacío en la lista mientras decides dónde soltar la tarjeta
+.cdk-drag-placeholder {
+  opacity: 0.3;
+  border: 2px dashed #94a3b8;
+  background: #f1f5f9;
+  border-radius: 12px;
+}
+
+// Animación suave de transición para las tarjetas que se quitan del camino al arrastrar
+.cdk-drop-list-receiving .pokemon-card,
+.cdk-drop-list-dragging .pokemon-card {
+  transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1);
+}

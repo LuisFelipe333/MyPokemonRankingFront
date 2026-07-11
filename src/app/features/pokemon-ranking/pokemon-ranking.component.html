@@ -22,12 +22,14 @@
 
 
   @if (!isLoading && !errorMessage) {
-    <div class="ranking-list">
+    <!-- 1. CdkDropList define el contenedor padre y vincula la función de soltar -->
+    <div class="ranking-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+      
       @for (pokemon of pokemonList; track pokemon.id) {
-        <div class="pokemon-card">
+        <!-- 2. cdkDrag le dice a Angular que esta tarjeta individual se puede arrastrar -->
+        <div class="pokemon-card" cdkDrag>
           <div class="position-badge">#{{ pokemon.position }}</div>
           
-          <!-- Imagen dinámica de la PokéAPI usando su ID oficial -->
           <div class="pokemon-image-container">
             <img 
               [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + pokemon.pokemonApiId + '.png'" 
@@ -48,6 +50,9 @@
             <p class="gen-info">Generación {{ pokemon.generation }}</p>
           </div>
 
+          <!-- Un pequeño indicador visual (manita) para que el usuario sepa que puede arrastrar desde aquí -->
+          <div class="drag-handle">☰</div>
+
           <div class="actions-container">
             <button class="delete-btn" (click)="deletePokemon(pokemon.id)">
               🗑️ Borrar
@@ -56,7 +61,7 @@
         </div>
       } @empty {
         <div class="empty-state">
-          <p>El ranking está vacío.</p>
+          <p>El ranking está vacío. ¡Es momento de agregar a tu primer compañero!</p>
         </div>
       }
     </div>
