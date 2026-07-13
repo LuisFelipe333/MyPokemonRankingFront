@@ -82,20 +82,25 @@ export class PokemonRankingComponent {
     if (!this.pokemonFound) return;
 
     this.isSaving = true;
+
+    // 💡 Calculamos la posición dinámica: si hay 5, el nuevo será el número 6
+    const nextPosition = this.pokemonList.length + 1;
+
+    // Construimos el objeto JSON exacto incluyendo la posición requerida
     const newPokemonData = {
       pokemonApiId: this.pokemonFound.id,
-      name: this.pokemonFound.name
+      name: this.pokemonFound.name,
+      position: nextPosition // 👈 ¡Aquí mandamos la posición del ranking!
     };
 
     this.pokemonService.addtoRanking(newPokemonData).subscribe({
       next: () => {
         this.isSaving = false;
         this.closeModal();
-        this.loadRanking(); 
+        this.loadRanking(); // Recargamos la lista para ver el nuevo Pokémon al final
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error al agregar el Pokémon al ranking (puede que ya esté repetido).');
+      error: () => {
+        alert('Error al agregar el Pokémon al ranking ');
         this.isSaving = false;
       }
     });
