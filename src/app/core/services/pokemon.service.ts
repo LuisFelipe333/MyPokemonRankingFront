@@ -47,4 +47,9 @@ export class PokemonService {
     );
   }
 
+  searchInPokeApi(nameOrId: string): Observable<any> {
+    const cleanName = nameOrId.toLowerCase().trim();
+    return this.http.get(`https://pokeapi.co/api/v2/pokemon/${cleanName}`);
+  }
+
 }

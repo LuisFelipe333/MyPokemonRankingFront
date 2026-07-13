@@ -2,6 +2,10 @@
   <header class="ranking-header">
     <h1> Mi Pokémon Ranking </h1>
     <p>Top de Pokémon</p>
+
+    <button class="add-pokemon-btn" (click)="openModal()">
+      ➕ Agregar Pokémon al TOP
+    </button>
   </header>
 
 
@@ -66,4 +70,51 @@
       }
     </div>
   }
+
+
+  <dialog id="addPokemonModal" class="pokemon-modal">
+    <div class="modal-header">
+      <h2>Añadir nuevo Pokémon</h2>
+      <button class="close-x" (click)="closeModal()">×</button>
+    </div>  
+
+    <div class="modal-body">
+      <p>Busca por nombre o número de la Pokédex oficial:</p>
+      
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          placeholder="Ej: Pikachu o 25"
+          (keyup.enter)="searchPokemon()"
+        />
+        <button (click)="searchPokemon()">Buscar</button>
+      </div>
+
+      <!-- Si hay error de búsqueda -->
+      @if (searchError) {
+        <p class="search-error-msg">❌ {{ searchError }}</p>
+      }
+
+      <!-- Tarjeta de vista previa del Pokémon encontrado -->
+      @if (pokemonFound) {
+        <div class="preview-card">
+          <img [src]="pokemonFound.sprite" [alt]="pokemonFound.name" />
+          <h3>{{ pokemonFound.name | titlecase }}</h3>
+          <p>ID Pokédex: #{{ pokemonFound.id }}</p>
+        </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal()">Cancelar</button>
+      <button 
+        class="save-btn" 
+        [disabled]="!pokemonFound || isSaving" 
+        (click)="saveToRanking()"
+      >
+        {{ isSaving ? 'Guardando...' : 'Confirmar e Instertar' }}
+      </button>
+    </div>
+  </dialog>
 </div>
