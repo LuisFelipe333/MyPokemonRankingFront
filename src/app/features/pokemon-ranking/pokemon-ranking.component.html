@@ -82,12 +82,23 @@
       <p>Busca por nombre o número de la Pokédex oficial:</p>
       
       <div class="search-box">
+        <!-- 💡 El atributo list="pokemonListOptions" vincula el input con el datalist de abajo -->
         <input 
           type="text" 
           [(ngModel)]="searchQuery" 
-          placeholder="Ej: Pikachu o 25"
+          list="pokemonListOptions"
+          placeholder="Escribe o selecciona un Pokémon..."
+          (change)="searchPokemon()"
           (keyup.enter)="searchPokemon()"
         />
+        
+        <!-- 💡 Esta es la magia nativa. Muestra la lista completa y filtra mientras escribes -->
+        <datalist id="pokemonListOptions">
+          @for (name of allPokemonNames; track name) {
+            <option [value]="name">{{ name | titlecase }}</option>
+          }
+        </datalist>
+
         <button (click)="searchPokemon()">Buscar</button>
       </div>
 

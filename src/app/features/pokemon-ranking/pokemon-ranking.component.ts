@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../core/services/pokemon.service';
 import { Pokemon } from '../../core/models/pokemon';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-pokemon-ranking',
@@ -11,8 +12,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './pokemon-ranking.component.html',
   styleUrl: './pokemon-ranking.component.scss'
 })
-export class PokemonRankingComponent {
+export class PokemonRankingComponent implements OnInit {
   private pokemonService = inject(PokemonService);
+  private http = inject(HttpClient);
 
   public pokemonList: Pokemon[] = [];
   public isLoading: boolean = true;
@@ -23,8 +25,11 @@ export class PokemonRankingComponent {
   public searchError: string = '';
   public isSaving: boolean = false;
 
+  public allPokemonNames: string[] = [];
+
   ngOnInit(): void {
     this.loadRanking();
+    this.preloadPokemonNames();
   }
 
   public loadRanking(): void {
@@ -39,6 +44,15 @@ export class PokemonRankingComponent {
         this.errorMessage = 'No se pudo conectar con el servidor backend.';
         this.isLoading = false;
       }
+    });
+  }
+
+  private preloadPokemonNames(): void {
+    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=1025').subscribe({
+      next: (res) => {
+        this.allPokemonNames = res.results.map((p: any) => p.name);
+      },
+      error: (err) => console.error('No se pudo precargar la lista de nombres', err)
     });
   }
 
