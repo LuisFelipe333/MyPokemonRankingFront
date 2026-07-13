@@ -27,6 +27,8 @@ export class PokemonRankingComponent implements OnInit {
 
   public allPokemonNames: string[] = [];
 
+  public customPosition: number | null = null; // Variable para almacenar la posición personalizada, en caso de que sea nula se manda a la ultima posicion
+
   ngOnInit(): void {
     this.loadRanking();
     this.preloadPokemonNames();
@@ -97,21 +99,23 @@ export class PokemonRankingComponent implements OnInit {
 
     this.isSaving = true;
 
-    // 💡 Calculamos la posición dinámica: si hay 5, el nuevo será el número 6
-    const nextPosition = this.pokemonList.length + 1;
+    // Si el usuario escribió una posición, usamos esa. Si no, va al final.
+    const targetPosition = this.customPosition !== null && this.customPosition > 0
+    ? this.customPosition
+    : this.pokemonList.length + 1;
 
     // Construimos el objeto JSON exacto incluyendo la posición requerida
     const newPokemonData = {
       pokemonApiId: this.pokemonFound.id,
       name: this.pokemonFound.name,
-      position: nextPosition // 👈 ¡Aquí mandamos la posición del ranking!
+      position: targetPosition // Usamos la posición personalizada o la última posición
     };
 
     this.pokemonService.addtoRanking(newPokemonData).subscribe({
       next: () => {
         this.isSaving = false;
         this.closeModal();
-        this.loadRanking(); // Recargamos la lista para ver el nuevo Pokémon al final
+        this.loadRanking(); // Recargamos la lista para ver el nuevo Pokémon
       },
       error: () => {
         alert('Error al agregar el Pokémon al ranking ');
@@ -132,6 +136,7 @@ export class PokemonRankingComponent implements OnInit {
     this.searchQuery = '';
     this.pokemonFound = null;
     this.searchError = '';
+    this.customPosition = null; // Limpiamos la posición personalizada al cerrar
   }
 
   public searchPokemon(): void {

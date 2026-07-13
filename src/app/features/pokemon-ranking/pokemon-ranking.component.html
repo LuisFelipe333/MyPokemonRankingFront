@@ -1,6 +1,6 @@
 <div class="ranking-container">
   <header class="ranking-header">
-    <h1> Mi Pokémon Ranking </h1>
+    <h1> Pokémon Ranking </h1>
     <p>Top de Pokémon</p>
 
     <button class="add-pokemon-btn" (click)="openModal()">
@@ -113,6 +113,23 @@
           <img [src]="pokemonFound.sprite" [alt]="pokemonFound.name" />
           <h3>{{ pokemonFound.name | titlecase }}</h3>
           <p>ID Pokédex: #{{ pokemonFound.id }}</p>
+        </div>
+        <div class="position-input-container" style="margin-top: 15px;">
+          <label for="customPos" style="display: block; margin-bottom: 5px; color: #475569; font-weight: 600; font-size: 0.9rem;">
+            Posición en el Ranking (Opcional):
+          </label>
+          <input 
+            id="customPos"
+            type="number" 
+            [(ngModel)]="customPosition" 
+            min="1"
+            [max]="pokemonList.length + 1"
+            placeholder="Ej: 1 (Dejar vacío para mandar al final)"
+            style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;"
+          />
+          <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #94a3b8;">
+            Si se deja vacío, se guardará en la posición #{{ pokemonList.length + 1 }}
+          </p>
         </div>
       }
     </div>
