@@ -1,0 +1,45 @@
+<!-- src/app/features/auth/login/login.component.html -->
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  <p class="subtitle">Ingresa para administrar tu Ranking Pokémon</p>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label for="username">Nombre de usuario</label>
+      <input 
+        id="username"
+        type="text" 
+        formControlName="username" 
+        placeholder="entrenador" 
+      />
+      @if (loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']) {
+        <small class="error-text">The username is required.</small>
+    } 
+    </div>
+
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input 
+        id="password"
+        type="password" 
+        formControlName="password" 
+        placeholder="••••••••" 
+      />
+      @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+        <small class="error-text">The password is required.</small>
+      }
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <button type="submit" [disabled]="loginForm.invalid || isLoading">
+      {{ isLoading ? 'Loading...' : 'Log In' }}
+    </button>
+
+  </form>
+</div>
