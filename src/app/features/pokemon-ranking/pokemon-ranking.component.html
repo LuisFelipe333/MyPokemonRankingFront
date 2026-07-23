@@ -1,18 +1,21 @@
 <div class="ranking-container">
   <header class="ranking-header">
-    <h1> Pokémon Ranking </h1>
-    <p>Top de Pokémon</p>
+    <button class="btn-logout" (click)="onLogout()">
+      Log out
+    </button>
+    
+    <h1>Pokémon Ranking</h1>
+    <p>Pokémon Top</p>
 
     <button class="add-pokemon-btn" (click)="openModal()">
-      ➕ Agregar Pokémon al TOP
+      ➕ Add Pokémon to the Ranking
     </button>
   </header>
-
 
   @if (isLoading) {
     <div class="loading-state">
       <div class="spinner"></div>
-      <p>Cargando Pokémon...</p>
+      <p>Loading Pokémon...</p>
     </div>
   }
 
@@ -20,7 +23,7 @@
   @if (errorMessage) {
     <div class="error-state">
       <p>⚠️ {{ errorMessage }}</p>
-      <button (click)="loadRanking()">Reintentar conexión</button>
+      <button (click)="loadRanking()">Retry connection</button>
     </div>
   }
 
@@ -65,7 +68,7 @@
         </div>
       } @empty {
         <div class="empty-state">
-          <p>El ranking está vacío. ¡Es momento de agregar a tu primer compañero!</p>
+          <p>The ranking is empty.</p>
         </div>
       }
     </div>
@@ -74,12 +77,12 @@
 
   <dialog id="addPokemonModal" class="pokemon-modal">
     <div class="modal-header">
-      <h2>Añadir nuevo Pokémon</h2>
+      <h2>Add New Pokémon</h2>
       <button class="close-x" (click)="closeModal()">×</button>
     </div>  
 
     <div class="modal-body">
-      <p>Busca por nombre o número de la Pokédex oficial:</p>
+      <p>Search by name or number in the official Pokédex:</p>
       
       <div class="search-box">
         <!-- 💡 El atributo list="pokemonListOptions" vincula el input con el datalist de abajo -->
@@ -87,7 +90,7 @@
           type="text" 
           [(ngModel)]="searchQuery" 
           list="pokemonListOptions"
-          placeholder="Escribe o selecciona un Pokémon..."
+          placeholder="Write or select a Pokémon..."
           (change)="searchPokemon()"
           (keyup.enter)="searchPokemon()"
         />
@@ -128,7 +131,7 @@
             style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;"
           />
           <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #94a3b8;">
-            Si se deja vacío, se guardará en la posición #{{ pokemonList.length + 1 }}
+            If left empty, it will be saved in position #{{ pokemonList.length + 1 }}
           </p>
         </div>
       }
@@ -141,7 +144,7 @@
         [disabled]="!pokemonFound || isSaving" 
         (click)="saveToRanking()"
       >
-        {{ isSaving ? 'Guardando...' : 'Confirmar e Instertar' }}
+        {{ isSaving ? 'Saving...' : 'Confirm and Insert' }}
       </button>
     </div>
   </dialog>

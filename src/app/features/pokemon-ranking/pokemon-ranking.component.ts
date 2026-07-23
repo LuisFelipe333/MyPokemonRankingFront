@@ -5,6 +5,7 @@ import { Pokemon } from '../../core/models/pokemon';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-pokemon-ranking',
@@ -15,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 export class PokemonRankingComponent implements OnInit {
   private pokemonService = inject(PokemonService);
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
   public pokemonList: Pokemon[] = [];
   public isLoading: boolean = true;
@@ -157,6 +159,10 @@ export class PokemonRankingComponent implements OnInit {
         this.searchError = 'No se encontró ningún Pokémon con ese nombre o ID.';
       }
     });
+  }
+
+  onLogout(): void {
+    this.authService.logout();
   }
 
 }

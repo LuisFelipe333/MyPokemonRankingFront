@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 export interface LoginDto {
   username: string;
@@ -16,6 +17,7 @@ export interface AuthResponseDto {
   providedIn: 'root'
 })
 export class AuthService {
+  private router = inject(Router);
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/Auth`; 
   private readonly TOKEN_KEY = 'pokemon_ranking_token';
@@ -32,6 +34,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
