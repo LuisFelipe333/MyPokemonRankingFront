@@ -12,12 +12,13 @@
     </button>
   </header>
 
+  <app-pokemon-filters (filterChange)="onFiltersApplied($event)"></app-pokemon-filters>
+
   @if (isLoading) {
-    <div class="loading-state">
-      <div class="spinner"></div>
+    <div class="loading-spinner">
       <p>Loading Pokémon...</p>
     </div>
-  }
+  } 
 
 
   @if (errorMessage) {
@@ -30,11 +31,11 @@
 
   @if (!isLoading && !errorMessage) {
     <!-- 1. CdkDropList define el contenedor padre y vincula la función de soltar -->
-    <div class="ranking-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+    <div class="ranking-list" cdkDropList [cdkDropListDisabled]="isFiltered" (cdkDropListDropped)="onDrop($event)">
       
       @for (pokemon of pokemonList; track pokemon.id) {
         <!-- 2. cdkDrag le dice a Angular que esta tarjeta individual se puede arrastrar -->
-        <div class="pokemon-card" cdkDrag>
+        <div class="pokemon-card" cdkDrag [cdkDragDisabled]="isFiltered">
           <div class="position-badge">#{{ pokemon.position }}</div>
           
           <div class="pokemon-image-container">
@@ -48,9 +49,14 @@
           <div class="pokemon-info">
             <h2>{{ pokemon.name | titlecase }}</h2>
             <div class="types-container">
-              @for (type of pokemon.types; track type) {
-                <span class="type-badge" [className]="'type-badge ' + type.toLowerCase()">
-                  {{ type }}
+              @if (pokemon.primaryType) {
+                <span class="type-badge" [ngClass]="pokemon.primaryType.toLowerCase()">
+                  {{ pokemon.primaryType }}
+                </span>
+              }
+              @if (pokemon.secondaryType) {
+                <span class="type-badge" [ngClass]="pokemon.secondaryType.toLowerCase()">
+                  {{ pokemon.secondaryType }}
                 </span>
               }
             </div>
@@ -58,7 +64,9 @@
           </div>
 
           <!-- Un pequeño indicador visual (manita) para que el usuario sepa que puede arrastrar desde aquí -->
-          <div class="drag-handle">☰</div>
+          @if (!isFiltered) {
+            <div class="drag-handle">☰</div>
+          }
 
           <div class="actions-container">
             <button class="delete-btn" (click)="deletePokemon(pokemon.id)">

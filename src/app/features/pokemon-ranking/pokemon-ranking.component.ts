@@ -6,10 +6,11 @@ import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
+import { PokemonFiltersComponent, FilterChangeEvent } from './components/pokemon-filters/pokemon-filters.component';
 
 @Component({
   selector: 'app-pokemon-ranking',
-  imports: [CommonModule, CdkDropList, CdkDrag, FormsModule],
+  imports: [CommonModule, CdkDropList, CdkDrag, FormsModule, PokemonFiltersComponent],
   templateUrl: './pokemon-ranking.component.html',
   styleUrl: './pokemon-ranking.component.scss'
 })
@@ -26,6 +27,7 @@ export class PokemonRankingComponent implements OnInit {
   public pokemonFound: any = null;
   public searchError: string = '';
   public isSaving: boolean = false;
+  public isFiltered: boolean = false;
 
   public allPokemonNames: string[] = [];
 
@@ -36,20 +38,28 @@ export class PokemonRankingComponent implements OnInit {
     this.preloadPokemonNames();
   }
 
-  public loadRanking(): void {
-    this.isLoading = true;
-    this.pokemonService.getRanking().subscribe({
-      next: (data) => {
-        this.pokemonList = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'No se pudo conectar con el servidor backend.';
-        this.isLoading = false;
-      }
-    });
-  }
+  public loadRanking(filters?: FilterChangeEvent): void {
+  this.isLoading = true;
+  this.errorMessage = ''; 
+
+  this.isFiltered = !!(filters?.type || filters?.generation);
+
+  // Le pasamos los filtros a tu servicio existente
+  this.pokemonService.getRanking(
+    filters?.type,
+    filters?.generation
+  ).subscribe({
+    next: (data) => {
+      this.pokemonList = data; 
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error(err);
+      this.errorMessage = 'Failed to connect to the backend server.'; 
+      this.isLoading = false;
+    }
+  });
+}
 
   private preloadPokemonNames(): void {
     this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=1025').subscribe({
@@ -163,6 +173,10 @@ export class PokemonRankingComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
+  }
+
+  public onFiltersApplied(filters: FilterChangeEvent): void {
+    this.loadRanking(filters);
   }
 
 }

@@ -4,5 +4,7 @@ export interface Pokemon {
   name: string;
   position: number;     
   generation: number;
-  types: string[];      
+  primaryType?: string;   
+  secondaryType?: string;
+  types?: string[];      // Lo dejamos opcional para construirlo
 }

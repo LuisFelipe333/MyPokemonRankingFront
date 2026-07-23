@@ -14,10 +14,10 @@ export class PokemonService {
   
   private http = inject(HttpClient);
 
-  // OBTENER EL RANKING (GET)
-  getRanking(type?: string, generation?: number): Observable<Pokemon[]> {
+  // OBTENER POKEMONS DESDE LA API (GET) con filtros opcionales
+  getRanking(type?: string, generation?: string | number, search?: string): Observable<Pokemon[]> {
     let params = new HttpParams();
-    
+
     if (type) {
       params = params.set('type', type);
     }

@@ -1,0 +1,43 @@
+<div class="filters-container">
+  
+
+  <!-- Filtro por Tipo -->
+  <div class="filter-group">
+    <label for="type">Type</label>
+    <select
+      id="type"
+      [(ngModel)]="selectedType"
+      (ngModelChange)="onFilterChange()"
+      class="filter-select"
+    >
+      @for (type of types; track type.value) {
+        <option [value]="type.value">{{ type.label }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Filtro por Generación -->
+  <div class="filter-group">
+    <label for="generation">Generation</label>
+    <select
+      id="generation"
+      [(ngModel)]="selectedGeneration"
+      (ngModelChange)="onFilterChange()"
+      class="filter-select"
+    >
+      @for (gen of generations; track gen.value) {
+        <option [value]="gen.value">{{ gen.label }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Botón para Limpiar Filtros -->
+  <button 
+    *ngIf="selectedType || selectedGeneration"
+    (click)="resetFilters()" 
+    class="btn-reset"
+    title="Clear filters"
+  >
+    ✕ Clear Filters
+  </button>
+</div>
