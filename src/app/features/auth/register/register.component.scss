@@ -1,0 +1,19 @@
+/* Importamos los estilos de la tarjeta, inputs y botones que usamos en el login */
+@import '../login/login.component.scss';
+
+.auth-switch {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.auth-switch a {
+  color: #3b82f6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}

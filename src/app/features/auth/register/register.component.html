@@ -1,0 +1,76 @@
+<div class="login-container">
+  <h2>Create Account</h2>
+  <p class="subtitle">Sign up to create your own Pokémon Ranking</p>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Campo: Nombre de Usuario -->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input 
+        id="username"
+        type="text" 
+        formControlName="username" 
+        placeholder="" 
+      />
+      @if (registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']) {
+        <small class="error-text">Username is required.</small>
+      }
+      @if (registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['minlength']) {
+        <small class="error-text">Username must be at least 3 characters long.</small>
+      }
+    </div>
+
+    <!-- Campo: Correo Electrónico -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        id="email"
+        type="email" 
+        formControlName="email" 
+        placeholder="" 
+      />
+      @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+        <small class="error-text">Email is required.</small>
+      }
+      @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+        <small class="error-text">Please enter a valid email address.</small>
+      }
+    </div>
+
+    <!-- Campo: Contraseña -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input 
+        id="password"
+        type="password" 
+        formControlName="password" 
+        placeholder="" 
+      />
+      @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+        <small class="error-text">Password is required.</small>
+      }
+      @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']) {
+        <small class="error-text">Password must be at least 6 characters long.</small>
+      }
+    </div>
+
+    <!-- Mensaje de Error del Backend -->
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Botón de Envío -->
+    <button type="submit" [disabled]="registerForm.invalid || isLoading">
+      {{ isLoading ? 'Creando cuenta...' : 'Registrarse' }}
+    </button>
+
+    <!-- Enlace para volver al Login -->
+    <div class="auth-switch">
+      ¿Ya tienes una cuenta? <a routerLink="/login">Inicia Sesión</a>
+    </div>
+
+  </form>
+</div>

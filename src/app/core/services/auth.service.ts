@@ -9,6 +9,12 @@ export interface LoginDto {
   password: string; 
 }
 
+export interface RegisterDto {
+  username: string;
+  password: string;
+  email: string;
+}
+
 export interface AuthResponseDto {
   token: string;
 }
@@ -43,5 +49,9 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  register(credentials: RegisterDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, credentials);
   }
 }
