@@ -12,5 +12,10 @@ export const routes: Routes = [
     canActivate: [authGuard], 
     loadComponent: () => import('./features/pokemon-ranking/pokemon-ranking.component')
         .then(m => m.PokemonRankingComponent)
+  },
+  {
+    path: 'share/:username',
+    loadComponent: () => import('./features/pokemon-ranking-public/pokemon-ranking-public.component')
+        .then(m => m.PokemonRankingPublicComponent)
   }
 ];

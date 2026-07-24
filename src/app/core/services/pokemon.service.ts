@@ -52,4 +52,18 @@ export class PokemonService {
     return this.http.get(`https://pokeapi.co/api/v2/pokemon/${cleanName}`);
   }
 
+  getPublicRanking(username: string, type?: string, generation?: string | number): Observable<Pokemon[]> {
+    let params = new HttpParams();
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    if (generation) {
+      params = params.set('generation', generation.toString());
+    }
+
+    return this.http.get<Pokemon[]>(`${this.apiUrl}/share/${username}`, { params });
+  }
+
 }
