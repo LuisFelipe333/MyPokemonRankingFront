@@ -22,6 +22,8 @@ export class PokemonRankingComponent implements OnInit {
   public pokemonList: Pokemon[] = [];
   public isLoading: boolean = true;
   public errorMessage: string = '';
+  public shareUrl: string = '';
+  public isCopied: boolean = false;
 
   public searchQuery: string = '';
   public pokemonFound: any = null;
@@ -177,6 +179,37 @@ export class PokemonRankingComponent implements OnInit {
 
   public onFiltersApplied(filters: FilterChangeEvent): void {
     this.loadRanking(filters);
+  }
+
+  public openShareModal(): void {
+    // 1. Obtenemos el username guardado (por ejemplo, del AuthService o localStorage)
+    const currentUsername = this.authService.getUsername(); 
+
+    // 2. Construimos la URL completa dinámica según la ventana del navegador
+    const origin = window.location.origin; // Ej: http://localhost:4200
+    this.shareUrl = `${origin}/share/${currentUsername}`;
+    this.isCopied = false;
+
+    // 3. Abrimos el modal nativo
+    const dialog = document.getElementById('shareRankingModal') as HTMLDialogElement;
+    if (dialog) dialog.showModal();
+  }
+
+  public closeShareModal(): void {
+    const dialog = document.getElementById('shareRankingModal') as HTMLDialogElement;
+    if (dialog) dialog.close();
+  }
+
+  public copyShareUrl(inputElement: HTMLInputElement): void {
+    // Seleccionamos y copiamos usando la Clipboard API nativa
+    navigator.clipboard.writeText(this.shareUrl).then(() => {
+      this.isCopied = true;
+      
+      // Regresamos el texto del botón a "Copy" después de 2.5 segundos
+      setTimeout(() => {
+        this.isCopied = false;
+      }, 2500);
+    });
   }
 
 }

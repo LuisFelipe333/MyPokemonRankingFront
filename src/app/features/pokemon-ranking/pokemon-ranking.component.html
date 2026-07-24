@@ -7,9 +7,15 @@
     <h1>Pokémon Ranking</h1>
     <p>Pokémon Top</p>
 
+    <div class="header-actions">
     <button class="add-pokemon-btn" (click)="openModal()">
       ➕ Add Pokémon to the Ranking
     </button>
+    
+    <button class="share-ranking-btn" (click)="openShareModal()">
+      🔗 Share
+    </button>
+  </div>
   </header>
 
   <app-pokemon-filters (filterChange)="onFiltersApplied($event)"></app-pokemon-filters>
@@ -70,7 +76,7 @@
 
           <div class="actions-container">
             <button class="delete-btn" (click)="deletePokemon(pokemon.id)">
-              🗑️ Borrar
+              🗑️ Delete
             </button>
           </div>
         </div>
@@ -154,6 +160,28 @@
       >
         {{ isSaving ? 'Saving...' : 'Confirm and Insert' }}
       </button>
+    </div>
+  </dialog>
+
+  <dialog id="shareRankingModal" class="pokemon-modal">
+    <div class="modal-header">
+      <h2>Share Your Ranking</h2>
+      <button class="close-x" (click)="closeShareModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <p>Anyone with this link can view your custom Pokémon ranking:</p>
+      
+      <div class="share-link-container">
+        <input type="text" [value]="shareUrl" readonly #shareInput />
+        <button (click)="copyShareUrl(shareInput)">
+          {{ isCopied ? '✓ Copied!' : '📋 Copy' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeShareModal()">Close</button>
     </div>
   </dialog>
 </div>

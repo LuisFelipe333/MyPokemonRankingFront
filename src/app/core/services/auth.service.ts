@@ -17,6 +17,7 @@ export interface RegisterDto {
 
 export interface AuthResponseDto {
   token: string;
+  username: string;
 }
 
 @Injectable({
@@ -33,6 +34,7 @@ export class AuthService {
       tap(response => {
         if (response.token) {
           localStorage.setItem(this.TOKEN_KEY, response.token);
+          localStorage.setItem('username', response.username);
         }
       })
     );
@@ -53,5 +55,9 @@ export class AuthService {
 
   register(credentials: RegisterDto): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, credentials);
+  }
+
+  public getUsername(): string {
+    return localStorage.getItem('username') || '';
   }
 }
